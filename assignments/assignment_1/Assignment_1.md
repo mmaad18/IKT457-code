@@ -2,8 +2,6 @@
 
 Download and install Python from http://www.python.org
 
-Lenker til en ekstern side.
-
 Implement the following program and justify your results:
 
 1. Create 5 Tsetlin Automata with actions “No” and “Yes”
