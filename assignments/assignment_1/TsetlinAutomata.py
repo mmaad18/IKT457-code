@@ -11,8 +11,7 @@ class TsetlinAutomata:
     states: NDArray[np.int_] = field(init=False)
 
     def __post_init__(self) -> None:
-        self.states = np.random.randint(-self.memory_size, self.memory_size + 1, size=self.num_of_automata)
-        self.states[self.states == 0] = 1
+        self.states = np.random.randint(1, 2*self.memory_size + 1, size=self.num_of_automata)
 
 
     def reset(self) -> None:
@@ -20,16 +19,15 @@ class TsetlinAutomata:
 
 
     def update(self, rewards: NDArray[np.bool_]) -> None:
-        direction = np.where(self.states > 0, 1, -1)
+        direction = np.where(self.states > self.memory_size, 1, -1)
         step = np.where(rewards, direction, -direction)
-        transition_step = np.where(self.states + step == 0, step, 0)
-        self.states += step + transition_step
+        self.states += step
 
-        self.states = np.clip(self.states, -self.memory_size, self.memory_size)
+        self.states = np.clip(self.states, 1, 2*self.memory_size)
 
 
     def get_actions(self) -> NDArray[np.int_]:
-        return (self.states > 0).astype(int)
+        return (self.states > self.memory_size).astype(int)
 
 
     def get_states(self) -> NDArray[np.int_]:
