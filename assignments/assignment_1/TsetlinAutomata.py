@@ -28,6 +28,10 @@ class TsetlinAutomata:
         self.states = np.clip(self.states, -self.memory_size, self.memory_size)
 
 
-    def actions(self) -> NDArray[np.int_]:
+    def get_actions(self) -> NDArray[np.int_]:
         return (self.states > 0).astype(int)
+
+
+    def get_states(self) -> NDArray[np.int_]:
+        return self.states.copy()
 
