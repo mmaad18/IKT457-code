@@ -9,7 +9,7 @@ def plot_M(M_list: list[int], memory_size: int, num_of_automata: int) -> None:
     plt.figure()
     plt.plot(M_list)
 
-    plt.title(f"M over time (N={num_of_automata}, n={memory_size})")
+    plt.title(f"M over time (Automata={num_of_automata}, Memory={memory_size})")
     plt.xlabel("Step")
     plt.ylabel("M")
 
@@ -28,7 +28,7 @@ def environment_1(actions: NDArray[np.int_]) -> NDArray[np.bool_]:
 
 
 def main():
-    memory_size = 50
+    memory_size = 5
     num_of_automata = 5
     tsetlin_automata = TsetlinAutomata(memory_size, num_of_automata)
 
