@@ -28,7 +28,7 @@ def environment_1(actions: NDArray[np.int_]) -> NDArray[np.bool_]:
 
 
 def main():
-    memory_size = 5
+    memory_size = 50
     num_of_automata = 5
     tsetlin_automata = TsetlinAutomata(memory_size, num_of_automata)
 
