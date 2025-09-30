@@ -26,7 +26,7 @@ class Patient:
         }
 
 
-    def to_np_array(self) -> NDArray[np.bool_]:
+    def observation(self) -> NDArray[np.bool_]:
         return np.array([
             self.Menopause == "lt40",
             self.Menopause == "ge40",
@@ -39,4 +39,8 @@ class Patient:
             self.Deg_malig == "3",
             self.Recurrence,
         ])
+
+
+    def full_observation(self) -> NDArray[np.bool_]:
+        return np.concatenate([self.observation(), ~self.observation()])
 
