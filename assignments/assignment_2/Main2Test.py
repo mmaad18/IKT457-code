@@ -57,15 +57,27 @@ class MyTestCase(unittest.TestCase):
         literals = np.random.rand(len(tsetlin_machine.states)) > 0.5
         tsetlin_machine.forget(literals, 1.0)
 
-        step = np.where(~literals, -1, 0)
+        step = np.where(literals, -1, 0)
         result_state = start_state + step
         np.testing.assert_array_equal(result_state, tsetlin_machine.states)
 
 
-    def test_tsetlin_machine_type_i_feedback(self):
+    def test_tsetlin_machine_type_i_feedback_condition_true(self):
         tsetlin_machine, patient, start_state = self.create_tsetlin_machine()
         observation = patient.full_observation()
-        tsetlin_machine.type_i_feedback(observation, 0.5)
+        tsetlin_machine.type_i_feedback(observation, 1.0)
+
+
+    def test_tsetlin_machine_type_i_feedback_condition_false(self):
+        tsetlin_machine, patient, start_state = self.create_tsetlin_machine()
+        observation = patient.full_observation()
+        tsetlin_machine.type_i_feedback(observation, 0.0)
+
+
+    def test_tsetlin_machine_type_ii_feedback(self):
+        tsetlin_machine, patient, start_state = self.create_tsetlin_machine()
+        observation = patient.full_observation()
+        tsetlin_machine.type_ii_feedback(observation)
 
 
     def test_2(self):

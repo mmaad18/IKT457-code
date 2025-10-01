@@ -39,7 +39,7 @@ class TsetlinMachine:
 
 
     def forget(self, literals: NDArray[np.bool_], forget_value: float) -> None:
-        transition = ~literals & self._probability_vector(forget_value)
+        transition = literals & self._probability_vector(forget_value)
         step = np.where(transition, -1, 0)
         self._clipped_step(step)
 
@@ -62,7 +62,7 @@ class TsetlinMachine:
         condition, true_literals = self.condition(observation)
         if condition:
             self.memorize(true_literals, memorize_value)
-            self.forget(true_literals, forget_value)
+            self.forget(~true_literals, forget_value)
         else:
             all_literals = np.ones(self.num_of_automata, dtype=bool)
             self.forget(all_literals, forget_value)
