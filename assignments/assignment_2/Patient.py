@@ -22,7 +22,6 @@ class Patient:
             "Deg_malig_1": self.Deg_malig == "1",
             "Deg_malig_2": self.Deg_malig == "2",
             "Deg_malig_3": self.Deg_malig == "3",
-            "Recurrence": self.Recurrence,
         }
 
 
@@ -37,10 +36,19 @@ class Patient:
             self.Deg_malig == "1",
             self.Deg_malig == "2",
             self.Deg_malig == "3",
-            self.Recurrence,
         ])
 
 
     def full_observation(self) -> NDArray[np.bool_]:
         return np.concatenate([self.observation(), ~self.observation()])
+
+
+    def features(self) -> list[str]:
+        return list(self.to_dict().keys())
+
+
+    def full_features(self) -> list[str]:
+        features = self.features()
+        not_features = ["¬" + f for f in features]
+        return features + not_features
 

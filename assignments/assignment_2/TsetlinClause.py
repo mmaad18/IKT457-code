@@ -5,7 +5,7 @@ from numpy.typing import NDArray
 
 
 @dataclass
-class TsetlinMachine:
+class TsetlinClause:
     memory_size: int
     num_of_automata: int
     states: NDArray[np.int_] = field(init=False)
@@ -52,9 +52,21 @@ class TsetlinMachine:
         return self.states.copy()
 
 
+    def get_rule(self, features: list[str]) -> str:
+        actions = self.get_actions()
+        included = [f for action, f in zip(actions, features) if action]
+        return " ∧ ".join(included) if included else "⊤"
+
+
     def condition(self, observation: NDArray[np.bool_]) -> tuple[np.bool_, NDArray[np.bool_]]:
-        true_literals = observation[self.states > self.memory_size]
-        return np.all(true_literals), true_literals
+        mem_literals = self.states > self.memory_size
+        true_literals = observation & mem_literals
+        return np.all(true_literals[mem_literals]), true_literals
+
+
+    def vote(self, observation: NDArray[np.bool_]) -> int:
+        fired, _ = self.condition(observation)
+        return 1 if fired else 0
 
 
     def type_i_feedback(self, observation: NDArray[np.bool_], memorize_value: float) -> None:
@@ -73,6 +85,5 @@ class TsetlinMachine:
         if condition:
             memorize_literals = ~true_literals & (self.states <= self.memory_size)
             self.memorize(memorize_literals, 1.0)
-
 
 
